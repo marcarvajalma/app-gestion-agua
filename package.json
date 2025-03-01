@@ -1,5 +1,5 @@
 {
-  "name": "app-gestion-agua",
+  "name": "filtrado-datos-csv",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -17,7 +17,7 @@
     "web-vitals": "^4.2.4"
   },
   "scripts": {
-    "start": "serve -s build",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
