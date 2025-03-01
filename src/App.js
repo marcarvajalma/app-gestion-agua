@@ -7,12 +7,13 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 // Valores específicos para cada label
+//Valores específicos para cada label
 const specificValues = {
-  dus: { morning: 50000, afternoon: 30000, night: 40000 }, // Ducha
+  ducha: { morning: 50000, afternoon: 30000, night: 40000 }, // Ducha
   toaleta: { morning: 18000, afternoon: 12000, night: 15000 }, // Inodoro
-  chiuveta: { morning: 9000, afternoon: 7000, night: 6000 }, // Lavamanos
-  masina_spalat: { morning: 80000, afternoon: 80000, night: 0 }, // Lavadora
-  masina_spalat_vase: { morning: 60000, afternoon: 60000, night: 0 }, // Lavaplatos
+  inodoro: { morning: 9000, afternoon: 7000, night: 6000 }, // Lavamanos
+  lavadora: { morning: 80000, afternoon: 80000, night: 0 }, // Lavadora
+  lavaplatos: { morning: 60000, afternoon: 60000, night: 0 }, // Lavaplatos
 };
 
 // Estilos personalizados
@@ -76,14 +77,49 @@ const Select = styled.select`
   font-size: 1rem;
 `;
 
-const SavingsText = styled(motion.div)`
-  font-family: "Quicksand", serif;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-top: 20px;
-  color: ${({ savings }) => (savings ? '#27ae60' : '#e74c3c')};
-`;
+// Nuevo componente para mostrar las listas de consejos o mensajes de éxito
+const SavingsList = ({ savings, excessLiters }) => {
+  if (savings === 'Ahorro Eficiente') {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: '#27ae60' }}>
+          <li>¡Gran trabajo! 🌍💚 Estás contribuyendo al ahorro de agua y al cuidado del planeta.</li>
+          <li>Dato curioso 🤓: Solo el 3% del agua del mundo es dulce, y menos del 1% es accesible para el consumo humano.</li>
+          <li>Sabías que... 🌱 Ahorrar agua también reduce tu huella de carbono, ya que su tratamiento y distribución consumen energía.</li>
+          <li>¡Tu esfuerzo cuenta! 👏 Si todas las personas ahorraran 10 litros al día, podríamos abastecer de agua a millones de personas en el mundo.</li>
+          <li>Eres un ejemplo a seguir ⭐: Comparte tu logro con tu familia y amigos para motivarlos a ahorrar agua también.</li>
+        </ul>
+      </motion.div>
+    );
+  } else {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <ul style={{ listStyleType: 'disc', paddingLeft: '20px', color: '#e74c3c' }}>
+          <li>Revisa fugas 💧: Un grifo que gotea puede desperdiciar hasta 30 litros de agua al día.</li>
+          <li>Reduce el tiempo de ducha 🚿: Cada minuto menos en la ducha ahorra hasta 12 litros de agua.</li>
+          <li>Usa sanitarios de bajo consumo 🚽: Puedes ahorrar hasta un 50% de agua en cada descarga.</li>
+          <li>No dejes correr el agua 🚰: Al lavar platos o cepillarte los dientes, cierra el grifo cuando no lo necesites.</li>
+          <li>Riega en horarios adecuados 🌿: Regar en la noche o temprano en la mañana evita la evaporación innecesaria.</li>
+          <li>Lava la ropa con carga completa 🧺: Ahorrarás hasta 80 litros de agua por cada ciclo de lavado.</li>
+          <li>Usa un balde en lugar de la manguera 🚗: Para lavar el carro, usa un balde y esponja en vez de una manguera abierta.</li>
+        </ul>
+        {excessLiters > 0 && (
+          <p style={{ color: '#e74c3c', fontWeight: 'bold' }}>
+            Gasto adicional: {excessLiters.toFixed(2)} litros
+          </p>
+        )}
+      </motion.div>
+    );
+  }
+};
 
 const App = () => {
   const [data, setData] = useState([]); // Datos del CSV
@@ -327,15 +363,8 @@ const App = () => {
             </BarChart>
           </ResponsiveContainer>
 
-          {/* Texto de ahorro */}
-          <SavingsText
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            savings={savingsText === 'Ahorro Eficiente'}
-          >
-            {savingsText} {excessLiters > 0 && `(Gasto adicional: ${excessLiters.toFixed(2)} litros)`}
-          </SavingsText>
+          {/* Lista de consejos o mensajes de éxito */}
+          <SavingsList savings={savingsText} excessLiters={excessLiters} />
 
           {/* Gráfica de dispersión con línea de tendencia */}
           <ResponsiveContainer width="100%" height={300}>
